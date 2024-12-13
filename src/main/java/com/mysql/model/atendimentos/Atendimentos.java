@@ -23,11 +23,22 @@ public class Atendimentos {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
     private LocalDateTime dataAtendimento;
 
-    public Atendimentos(Long id, Cliente cliente, Profissional profissional, LocalDateTime dataAtendimento) {
+    private String descricao;
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public Atendimentos(Long id, Profissional profissional, Cliente cliente, LocalDateTime dataAtendimento, String descricao) {
         Id = id;
-        this.cliente = cliente;
         this.profissional = profissional;
+        this.cliente = cliente;
         this.dataAtendimento = dataAtendimento;
+        this.descricao = descricao;
     }
 
     public Profissional getProfissional() {

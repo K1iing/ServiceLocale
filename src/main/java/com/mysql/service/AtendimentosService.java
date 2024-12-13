@@ -42,6 +42,7 @@ public class AtendimentosService {
         atendimentos.setCliente(cliente);
         atendimentos.setProfissional(profissional);
         atendimentos.setDataAtendimento(dto.dataAgendada());
+        atendimentos.setDescricao(dto.descricao());
 
         atendimentos = atendimentosRepository.save(atendimentos);
 
