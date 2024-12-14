@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Atendimentos</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header>
+    <h1>Gestão de Atendimentos</h1>
+    <nav>
+        <ul>
+            <li><a href="/home">Início</a></li>
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Logout</button>
+            </form>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <section>
+        <h2>Agendar Atendimento</h2>
+        <form th:action="@{/atendimentos}" method="post">
+            <label for="idCliente">ID do Cliente:</label>
+            <input type="number" id="idCliente" name="idCliente" required>
+
+            <label for="idProfissional">ID do Profissional:</label>
+            <input type="number" id="idProfissional" name="idProfissional" required>
+
+            <label for="dataAgendada">Data do Atendimento:</label>
+            <input type="datetime-local" id="dataAgendada" name="dataAgendada" required>
+
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" required></textarea>
+
+            <button type="submit">Agendar</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Lista de Atendimentos</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Profissional</th>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Itera sobre a lista de atendimentos -->
+            <tr th:each="atendimento : ${atendimentos}">
+                <td th:text="${atendimento.id}"></td>
+                <td th:text="${atendimento.cliente.nome}"></td>
+                <td th:text="${atendimento.profissional.nome}"></td>
+                <td th:text="${atendimento.dataAtendimento}"></td>
+                <td th:text="${atendimento.descricao}"></td>
+                <td>
+                    <form th:action="@{/atendimentos/{id}(id=${atendimento.id})}" method="post">
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+</body>
+</html>
