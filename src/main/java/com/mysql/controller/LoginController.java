@@ -25,4 +25,9 @@ public class LoginController {
     public String redirecionarAtendimentos() {
         return "home/atendimentos";
     }
+
+    @GetMapping("/cadastrar")
+    public String redirecionarCadastro() {
+        return "autenticacao/cadastro";
+    }
 }

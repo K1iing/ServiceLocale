@@ -4,28 +4,30 @@ package com.mysql.controller;
 import com.mysql.model.client.Cliente;
 import com.mysql.model.client.ClienteDTO;
 import com.mysql.service.ClienteService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("cliente")
+@RequestMapping("/cliente")
 public class ClienteController {
 
     @Autowired
     private ClienteService clienteService;
 
-    @PostMapping()
-    public ResponseEntity<ClienteDTO> cadastrar(@RequestBody ClienteDTO dto) {
+    @PostMapping("/cadastrar")
+    public ResponseEntity<ClienteDTO> cadastrar(@RequestBody @Valid ClienteDTO dto) {
         ClienteDTO clienteDTO = clienteService.cadastrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteDTO);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Cliente>> listarTodos() {
+    public ResponseEntity<List<ClienteDTO>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 

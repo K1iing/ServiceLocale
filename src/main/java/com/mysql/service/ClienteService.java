@@ -2,10 +2,12 @@ package com.mysql.service;
 
 import com.mysql.exception.ExceptionPersonalizada;
 import com.mysql.mapper.ClienteMapper;
+import com.mysql.mapper.GeneroMapper;
 import com.mysql.model.client.Cliente;
 import com.mysql.model.client.ClienteDTO;
 import com.mysql.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,12 @@ public class ClienteService {
     @Autowired
     private ClienteMapper clienteMapper;
 
+    @Autowired
+    private GeneroMapper generoMapper;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     //Cadastra o Usuario e verifica se ele já existe pelo Email
     public ClienteDTO cadastrar(ClienteDTO dto) {
         Cliente cliente = clienteMapper.toEntity(dto);
@@ -26,17 +34,19 @@ public class ClienteService {
         if(clienteRepository.existsByEmail(dto.email())) {
             throw new ExceptionPersonalizada("Cliente ja existente");
         }
-
+        cliente.setSenha(passwordEncoder.encode(dto.senha()));
         clienteRepository.save(cliente);
 
         return clienteMapper.toDTO(cliente);
     }
 
     //Lista todos os Clientes
-    public List<Cliente> listarTodos() {
+    public List<ClienteDTO> listarTodos() {
 
         List<Cliente> clientes = clienteRepository.findAll();
-        return clientes;
+
+        return generoMapper.toDTOList(clientes);
+
     }
 
     public boolean excluirUsuario(Long id) {
@@ -48,4 +58,5 @@ public class ClienteService {
 
 
     }
+
 }

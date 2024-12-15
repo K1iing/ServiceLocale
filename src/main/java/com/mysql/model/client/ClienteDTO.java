@@ -10,5 +10,7 @@ public record ClienteDTO(
         @Email(message = "Insira um email valido")
         String email,
         @NotBlank(message = "O telefone não pode ser vazio")
-        String telefone) {
+        String telefone,
+        @NotBlank(message = "a senha não pode ser vazia")
+        String senha) {
 }
