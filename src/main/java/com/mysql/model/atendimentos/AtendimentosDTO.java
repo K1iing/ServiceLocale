@@ -8,8 +8,6 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 public record AtendimentosDTO(
-        @NotNull(message = "Não pode ser nulo o IdCliente")
-        Long idCliente,
         @NotNull(message = "Não pode ser nulo o IdProfissional")
         Long idProfissional,
 

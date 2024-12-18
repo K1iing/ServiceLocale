@@ -1,75 +1,134 @@
 <!DOCTYPE html>
-<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão de Atendimentos</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>Cadastrar Atendimento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .error {
+            color: red;
+        }
+
+        .success {
+            color: green;
+        }
+    </style>
 </head>
 <body>
-<header>
-    <h1>Gestão de Atendimentos</h1>
-    <nav>
-        <ul>
-            <li><a href="/home">Início</a></li>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit">Logout</button>
-            </form>
-        </ul>
-    </nav>
-</header>
 
-<main>
-    <section>
-        <h2>Agendar Atendimento</h2>
-        <form th:action="@{/atendimentos}" method="post">
-            <label for="idCliente">ID do Cliente:</label>
-            <input type="number" id="idCliente" name="idCliente" required>
+<h1>Agendar Atendimento</h1>
 
-            <label for="idProfissional">ID do Profissional:</label>
-            <input type="number" id="idProfissional" name="idProfissional" required>
+<form id="atendimentoForm">
+    <label for="idProfissional">ID Profissional:</label>
+    <input type="number" id="idProfissional" name="idProfissional" required>
 
-            <label for="dataAgendada">Data do Atendimento:</label>
-            <input type="datetime-local" id="dataAgendada" name="dataAgendada" required>
+    <label for="dataAgendada">Data Agendada:</label>
+    <input type="datetime-local" id="dataAgendada" name="dataAgendada" required>
 
-            <label for="descricao">Descrição:</label>
-            <textarea id="descricao" name="descricao" required></textarea>
+    <label for="descricao">Descrição:</label>
+    <textarea id="descricao" name="descricao" required></textarea>
 
-            <button type="submit">Agendar</button>
-        </form>
-    </section>
+    <button type="submit">Agendar</button>
+</form>
 
-    <section>
-        <h2>Lista de Atendimentos</h2>
-        <table>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Cliente</th>
-                <th>Profissional</th>
-                <th>Data</th>
-                <th>Descrição</th>
-                <th>Ações</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Itera sobre a lista de atendimentos -->
-            <tr th:each="atendimento : ${atendimentos}">
-                <td th:text="${atendimento.id}"></td>
-                <td th:text="${atendimento.cliente.nome}"></td>
-                <td th:text="${atendimento.profissional.nome}"></td>
-                <td th:text="${atendimento.dataAtendimento}"></td>
-                <td th:text="${atendimento.descricao}"></td>
-                <td>
-                    <form th:action="@{/atendimentos/{id}(id=${atendimento.id})}" method="post">
-                        <input type="hidden" name="_method" value="delete">
-                        <button type="submit">Excluir</button>
-                    </form>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
-</main>
+<div id="message"></div>
+
+<script>
+    document.getElementById("atendimentoForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        // Pegando os valores dos campos
+        const idProfissional = document.getElementById("idProfissional").value;
+        const dataAgendada = document.getElementById("dataAgendada").value;
+        const descricao = document.getElementById("descricao").value;
+
+        // Convertendo a data para o formato esperado pelo backend (LocalDateTime)
+        const dataFormatted = new Date(dataAgendada).toLocaleString('pt-BR', {
+            timeZone: 'UTC',
+            hour12: false
+        }).replace(',', ''); // Remover a vírgula
+
+        const atendimentoData = {
+            idProfissional: parseInt(idProfissional),
+            dataAgendada: dataFormatted,
+            descricao: descricao
+        };
+
+        // Enviando os dados via POST para a API
+        fetch('http://localhost:8080/atendimentos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken') // Se for necessário enviar o JWT token
+            },
+            body: JSON.stringify(atendimentoData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => {
+                    throw new Error(err.message || 'Erro ao agendar atendimento');
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('message').innerText = 'Atendimento agendado com sucesso!';
+            document.getElementById('message').classList.remove('error');
+            document.getElementById('message').classList.add('success');
+            document.getElementById('atendimentoForm').reset();
+        })
+        .catch(error => {
+            document.getElementById('message').innerText = `Erro: ${error.message}`;
+            document.getElementById('message').classList.remove('success');
+            document.getElementById('message').classList.add('error');
+        });
+    });
+</script>
+
 </body>
 </html>

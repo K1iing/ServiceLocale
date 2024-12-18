@@ -4,12 +4,14 @@ import com.mysql.exception.ExceptionPersonalizada;
 import com.mysql.mapper.AtendimentoMapper;
 import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosDTO;
+import com.mysql.model.atendimentos.AtendimentosListagemDTO;
 import com.mysql.model.client.Cliente;
 import com.mysql.model.profissional.Profissional;
 import com.mysql.repository.AtendimentosRepository;
 import com.mysql.repository.ClienteRepository;
 import com.mysql.repository.ProfissionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -32,8 +34,10 @@ public class AtendimentosService {
 
 
     public AtendimentosDTO agendamento(AtendimentosDTO dto) {
-        Cliente cliente = clienteRepository.findById(dto.idCliente())
-                .orElseThrow(() -> new ExceptionPersonalizada("Não foi encontrado o Cliente"));
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Cliente cliente = clienteRepository.findByEmail(username)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Profissional profissional = profissionalRepository.findById(dto.idProfissional())
                 .orElseThrow(() -> new ExceptionPersonalizada("Profissional Não encontrado"));
@@ -50,7 +54,11 @@ public class AtendimentosService {
 
     }
 
-    public List<Atendimentos> listarTodosAtendimentos() {
+    public List<AtendimentosListagemDTO> listarTodosAtendimentos() {
+        return atendimentoMapper.toListDTO(atendimentosRepository.findAll());
+    }
+
+    public List<Atendimentos> retornarAlgo() {
         return atendimentosRepository.findAll();
     }
 

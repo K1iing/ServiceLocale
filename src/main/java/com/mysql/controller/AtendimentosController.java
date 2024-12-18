@@ -2,6 +2,7 @@ package com.mysql.controller;
 
 import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosDTO;
+import com.mysql.model.atendimentos.AtendimentosListagemDTO;
 import com.mysql.service.AtendimentosService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class AtendimentosController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Atendimentos>> listarTodos() {
+    public ResponseEntity<List<AtendimentosListagemDTO>> listarTodos() {
         return ResponseEntity.ok(atendimentosService.listarTodosAtendimentos());
     }
 
@@ -34,5 +35,10 @@ public class AtendimentosController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Excluido com sucesso!");
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/retornar")
+    public ResponseEntity<List<Atendimentos>> retornarAlgo() {
+        return ResponseEntity.ok(atendimentosService.retornarAlgo());
     }
 }
