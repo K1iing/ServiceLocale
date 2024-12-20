@@ -1,6 +1,5 @@
 package com.mysql.controller;
 
-import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosDTO;
 import com.mysql.model.atendimentos.AtendimentosListagemDTO;
 import com.mysql.service.AtendimentosService;
@@ -37,8 +36,4 @@ public class AtendimentosController {
         return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("/retornar")
-    public ResponseEntity<List<Atendimentos>> retornarAlgo() {
-        return ResponseEntity.ok(atendimentosService.retornarAlgo());
-    }
 }

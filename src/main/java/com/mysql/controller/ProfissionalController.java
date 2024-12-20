@@ -38,4 +38,9 @@ public class ProfissionalController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ja foi excluido ou não existe");
     }
+
+    @GetMapping("/atender")
+    public ResponseEntity<String> getProfissional() {
+        return ResponseEntity.ok("Detalhes do profissional");
+    }
 }

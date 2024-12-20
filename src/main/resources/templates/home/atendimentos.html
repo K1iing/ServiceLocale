@@ -23,7 +23,7 @@
             margin-bottom: 8px;
         }
 
-        input, textarea {
+        input, textarea, select {
             width: 100%;
             padding: 8px;
             margin-bottom: 15px;
@@ -65,7 +65,9 @@
 
 <form id="atendimentoForm">
     <label for="idProfissional">ID Profissional:</label>
-    <input type="number" id="idProfissional" name="idProfissional" required>
+    <select id="idProfissional" name="idProfissional" required>
+        <option value="">Selecione um profissional</option>
+    </select>
 
     <label for="dataAgendada">Data Agendada:</label>
     <input type="datetime-local" id="dataAgendada" name="dataAgendada" required>
@@ -79,53 +81,94 @@
 <div id="message"></div>
 
 <script>
-    document.getElementById("atendimentoForm").addEventListener("submit", function(event) {
-        event.preventDefault();
+    // Função para carregar os profissionais da API
+    function carregarProfissionais() {
+        fetch('http://localhost:8080/profissional')  // URL correta da API
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao carregar os profissionais: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(profissionais => {
+                const selectElement = document.getElementById('idProfissional');
+                selectElement.innerHTML = '';  // Limpar a lista antes de popular
 
-        // Pegando os valores dos campos
-        const idProfissional = document.getElementById("idProfissional").value;
-        const dataAgendada = document.getElementById("dataAgendada").value;
-        const descricao = document.getElementById("descricao").value;
+                // Adicionando uma opção de seleção
+                const option = document.createElement('option');
+                option.value = '';
+                option.textContent = 'Selecione um profissional';
+                selectElement.appendChild(option);
 
-        // Convertendo a data para o formato esperado pelo backend (LocalDateTime)
-        const dataFormatted = new Date(dataAgendada).toLocaleString('pt-BR', {
-            timeZone: 'UTC',
-            hour12: false
-        }).replace(',', ''); // Remover a vírgula
-
-        const atendimentoData = {
-            idProfissional: parseInt(idProfissional),
-            dataAgendada: dataFormatted,
-            descricao: descricao
-        };
-
-        // Enviando os dados via POST para a API
-        fetch('http://localhost:8080/atendimentos', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('jwtToken') // Se for necessário enviar o JWT token
-            },
-            body: JSON.stringify(atendimentoData)
-        })
-        .then(response => {
-            if (!response.ok) {
-                return response.json().then(err => {
-                    throw new Error(err.message || 'Erro ao agendar atendimento');
+                // Populando o select com os profissionais
+                profissionais.forEach(profissional => {
+                    const option = document.createElement('option');
+                    option.value = profissional.id;
+                    option.textContent = `${profissional.nome} - ${profissional.especialidade}`;
+                    selectElement.appendChild(option);
                 });
-            }
-            return response.json();
-        })
-        .then(data => {
-            document.getElementById('message').innerText = 'Atendimento agendado com sucesso!';
-            document.getElementById('message').classList.remove('error');
-            document.getElementById('message').classList.add('success');
-            document.getElementById('atendimentoForm').reset();
-        })
-        .catch(error => {
-            document.getElementById('message').innerText = `Erro: ${error.message}`;
-            document.getElementById('message').classList.remove('success');
-            document.getElementById('message').classList.add('error');
+            })
+            .catch(error => {
+                console.error('Erro ao carregar os profissionais:', error);
+                document.getElementById('message').innerText = `Erro ao carregar profissionais: ${error.message}`;
+                document.getElementById('message').classList.add('error');
+            });
+    }
+
+    // Aguardar o DOM carregar antes de adicionar o evento
+    document.addEventListener('DOMContentLoaded', function() {
+        // Carregar os profissionais ao carregar a página
+        carregarProfissionais();
+
+        // Quando o formulário for submetido
+        document.getElementById("atendimentoForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Pegando os valores dos campos
+            const idProfissional = document.getElementById("idProfissional").value;
+            const dataAgendada = document.getElementById("dataAgendada").value;
+            const descricao = document.getElementById("descricao").value;
+
+            // Convertendo a data para o formato esperado pelo backend (LocalDateTime)
+            const dataFormatted = new Date(dataAgendada).toLocaleString('pt-BR', {
+                timeZone: 'UTC',
+                hour12: false
+            }).replace(',', ''); // Remover a vírgula
+
+            const atendimentoData = {
+                idProfissional: parseInt(idProfissional),
+                dataAgendada: dataFormatted,
+                descricao: descricao
+            };
+
+            // Enviar os dados para agendar o atendimento
+            fetch('http://localhost:8080/atendimentos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('jwtToken')  // Se necessário, enviar token JWT
+                },
+                body: JSON.stringify(atendimentoData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.message || 'Erro ao agendar atendimento');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('message').innerText = 'Atendimento agendado com sucesso!';
+                document.getElementById('message').classList.remove('error');
+                document.getElementById('message').classList.add('success');
+                document.getElementById('atendimentoForm').reset();
+            })
+            .catch(error => {
+                document.getElementById('message').innerText = `Erro: ${error.message}`;
+                document.getElementById('message').classList.remove('success');
+                document.getElementById('message').classList.add('error');
+            });
         });
     });
 </script>

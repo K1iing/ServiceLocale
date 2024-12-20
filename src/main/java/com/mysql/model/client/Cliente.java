@@ -1,6 +1,5 @@
 package com.mysql.model.client;
 
-import com.mysql.mapper.GeneroMapper;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -8,12 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 
 
 @Entity
 @Table(name = "clientes")
-public class Cliente implements UserDetails {
+public class Cliente{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -83,38 +81,5 @@ public class Cliente implements UserDetails {
         this.senha = senha;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-    }
 
-    @Override
-    public String getPassword() {
-        return senha;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
