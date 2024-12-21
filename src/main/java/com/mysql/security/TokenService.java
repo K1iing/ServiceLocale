@@ -35,7 +35,6 @@ public class TokenService {
     public String getSubject(String tokenJWT) {
         try {
             var algorithm = Algorithm.HMAC256(secret);
-            System.out.println("Token JWT: " + tokenJWT);
             return JWT.require(algorithm)
                     .withIssuer("clubservice")
                     .build()

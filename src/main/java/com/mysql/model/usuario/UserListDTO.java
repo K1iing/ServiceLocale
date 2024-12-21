@@ -1,6 +1,7 @@
 package com.mysql.model.usuario;
 
-public record UsuarioDTO(
+public record UserListDTO(
+        Long id,
         String email,
         String password
 ) {

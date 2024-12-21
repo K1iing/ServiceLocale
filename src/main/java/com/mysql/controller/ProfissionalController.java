@@ -6,6 +6,7 @@ import com.mysql.model.atendimentos.AtendimentosDTO;
 import com.mysql.model.profissional.Profissional;
 import com.mysql.model.profissional.ProfissionalDTO;
 import com.mysql.service.ProfissionalService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/profissional")
+@SecurityRequirement(name = "bearer-key")
 public class ProfissionalController {
 
     @Autowired
@@ -39,8 +41,5 @@ public class ProfissionalController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ja foi excluido ou não existe");
     }
 
-    @GetMapping("/atender")
-    public ResponseEntity<String> getProfissional() {
-        return ResponseEntity.ok("Detalhes do profissional");
-    }
+
 }

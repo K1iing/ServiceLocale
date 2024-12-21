@@ -1,105 +1,76 @@
-/* Reset básico */
 body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-}
-
-/* Container principal */
-.container {
+    background-color: #f4f4f4;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    padding: 20px;
+    height: 100vh;
+    margin: 0;
 }
 
-/* Card de formulário */
-.card {
-    background-color: #fff;
+.login-container {
+    background-color: white;
+    padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    width: 100%;
-    padding: 20px;
-    box-sizing: border-box;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
 }
 
-/* Título do formulário */
-.title {
+.login-title {
     text-align: center;
-    font-size: 1.8rem;
-    font-weight: bold;
+    font-size: 24px;
     margin-bottom: 20px;
-    color: #4a90e2;
 }
 
-/* Grupos do formulário */
 .form-group {
     margin-bottom: 15px;
 }
 
-/* Rótulos */
 label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    font-size: 14px;
+    color: #333;
 }
 
-/* Campos de entrada */
-input {
+input[type="email"], input[type="password"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    font-size: 14px;
+    border: 1px solid #ddd;
     border-radius: 5px;
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.3s ease;
 }
 
-input:focus {
-    border-color: #4a90e2;
-}
-
-/* Botão */
 button {
     width: 100%;
     padding: 10px;
-    background-color: #4a90e2;
+    background-color: #007bff;
+    color: white;
     border: none;
     border-radius: 5px;
-    color: #fff;
-    font-size: 1rem;
+    font-size: 16px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #357abd;
+    background-color: #0056b3;
 }
 
-/* Alertas */
+.link-cadastro {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.link-cadastro a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.link-cadastro a:hover {
+    text-decoration: underline;
+}
+
 .alert {
+    color: red;
+    background-color: #f8d7da;
     padding: 10px;
     border-radius: 5px;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.alert-danger {
-    background-color: #ffdddd;
-    color: #d9534f;
-    border: 1px solid #d9534f;
-}
-
-/* Ícones */
-.material-icons {
-    margin-right: 5px;
-    font-size: 1.2rem;
 }

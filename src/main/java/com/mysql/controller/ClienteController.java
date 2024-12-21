@@ -3,6 +3,7 @@ package com.mysql.controller;
 
 import com.mysql.model.client.ClienteDTO;
 import com.mysql.service.ClienteService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/cliente")
+@SecurityRequirement(name = "bearer-key")
 public class ClienteController {
 
     @Autowired
@@ -29,10 +31,6 @@ public class ClienteController {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 
-    @GetMapping("hello")
-    public String olaMundo() {
-        return "Ola, Mundo";
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> excluirCliente(@PathVariable Long id) {

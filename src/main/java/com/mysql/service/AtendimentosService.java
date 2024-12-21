@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -34,9 +33,10 @@ public class AtendimentosService {
 
 
     public AtendimentosDTO agendamento(AtendimentosDTO dto) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        Cliente cliente = clienteRepository.findByEmail(username)
+        System.out.println(email);
+        Cliente cliente = clienteRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Profissional profissional = profissionalRepository.findById(dto.idProfissional())

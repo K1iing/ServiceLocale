@@ -1,51 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt-br"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{template.html}">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" href="/css/login.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="/css/login.css">
 </head>
-
 <body>
-<div layout:fragment="conteudo">
-    <main class="container">
-        <section class="card form-card">
-            <h2 class="title">Login</h2>
 
-            <form method="post" action="#" th:action="@{/login}">
-                <div class="alert alert-danger text-center text-uppercase" th:if="${param.error != null}">
-                    <p>
-                        <i class="material-icons">&#xE000;</i><strong>Dados inválidos!</strong>
-                    </p>
-                </div>
+<div class="login-container">
+    <h2 class="login-title">Login</h2>
 
-                <div class="alert alert-danger text-center text-uppercase" th:if="${param.logout != null}">
-                    <p>
-                        <i class="material-icons">&#xE000;</i><strong>Você saiu da aplicação!</strong>
-                    </p>
-                </div>
+    <form id="loginForm">
+        <div class="alert alert-danger text-center" id="errorMessage" style="display: none;">
+            <strong>Usuário ou senha inválidos!</strong>
+        </div>
 
-                <div class="form-group">
-                    <label for="username" class="required">Email:</label>
-                    <input id="username" name="username" type="email" class="form-control" required="required">
-                </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input id="username" name="username" type="text" class="form-control" required="required" placeholder="Digite seu username">
+        </div>
 
-                <div class="form-group">
-                    <label for="password" class="required">Senha:</label>
-                    <input id="password" name="password" type="password" class="form-control" required="required">
-                </div>
+        <div class="form-group">
+            <label for="password">Senha:</label>
+            <input id="password" name="password" type="password" class="form-control" required="required" placeholder="Digite sua senha">
+        </div>
 
-                <button class="btn btn-primary" title="Entrar">
-                    Entrar
-                </button>
-            </form>
-            <div class="link-cadastro">
-                <p>Ainda não tem uma conta? <a href="/cadastrar">Cadastre-se aqui</a></p>
-            </div>
-        </section>
-    </main>
+        <button type="submit" class="btn btn-primary">Entrar</button>
+    </form>
+
+    <div class="link-cadastro">
+        <p>Ainda não tem uma conta? <a href="/cadastrar">Cadastre-se aqui</a></p>
+    </div>
 </div>
+
+<script src="/js/login.js"></script>
 </body>
 </html>

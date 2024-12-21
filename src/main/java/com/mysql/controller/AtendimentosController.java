@@ -3,6 +3,7 @@ package com.mysql.controller;
 import com.mysql.model.atendimentos.AtendimentosDTO;
 import com.mysql.model.atendimentos.AtendimentosListagemDTO;
 import com.mysql.service.AtendimentosService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/atendimentos")
+@SecurityRequirement(name = "bearer-key")
 public class AtendimentosController {
 
     @Autowired

@@ -25,9 +25,14 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/login", "/css/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/atendimentos/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/**", "/cliente/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/login", "/css/**", "/js/**",
+                        "atendimentoshome", "/cadastrar", "/profissional/**, ", "/atendimentos/**",
+                        "/cliente/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/atendimentos/**", "/cliente/**"
+                        , "/profissional/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/auth/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE, "/auth/**").authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
