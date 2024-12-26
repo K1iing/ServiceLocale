@@ -27,8 +27,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/**", "/cliente/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/login", "/css/**", "/js/**",
-                        "atendimentoshome", "/cadastrar", "/profissional/**, ", "/atendimentos/**",
-                        "/cliente/**", "/v3/api-docs/**", "/swagger-ui/**").permitAll())
+                         "/cadastrar",
+                        "/v3/api-docs/**", "/swagger-ui/**").permitAll())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/atendimentos/**", "/cliente/**"
                         , "/profissional/**").authenticated())
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/auth/**").authenticated())

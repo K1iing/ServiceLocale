@@ -30,4 +30,9 @@ public class LoginController {
     public String redirecionarCadastro() {
         return "autenticacao/cadastro";
     }
+
+    @GetMapping("/chatmessage")
+    public String redirecionarChat() {
+        return "home/chatmessage";
+    }
 }

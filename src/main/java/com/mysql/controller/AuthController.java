@@ -4,7 +4,7 @@ import com.mysql.model.usuario.*;
 import com.mysql.security.TokenService;
 import com.mysql.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +50,7 @@ public class AuthController {
         return ResponseEntity.ok(usuarioService.deleteUser(id));
     }
 
+    @SecurityRequirement(name = "bearer-key")
     @GetMapping
     @Operation(summary = "Listar todos os Usuarios que logam no site")
     private ResponseEntity<List<UserListDTO>> listarTodos() {
