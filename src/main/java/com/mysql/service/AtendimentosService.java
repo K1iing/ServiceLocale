@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -41,7 +43,7 @@ public class AtendimentosService {
 
         Profissional profissional = profissionalRepository.findById(dto.idProfissional())
                 .orElseThrow(() -> new ExceptionPersonalizada("Profissional Não encontrado"));
-
+        
         Atendimentos atendimentos = new Atendimentos();
         atendimentos.setCliente(cliente);
         atendimentos.setProfissional(profissional);
@@ -70,5 +72,10 @@ public class AtendimentosService {
             return true;
         }
         return false;
+    }
+    public List<AtendimentosListagemDTO> listarHistorico(Long id) {
+        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        LocalDateTime horasagora = LocalDate.now().atStartOfDay();
+        return atendimentoMapper.toListDTO(atendimentosRepository.findByClienteAndDataAtendimentoBefore(cliente, horasagora));
     }
 }

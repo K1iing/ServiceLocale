@@ -3,6 +3,7 @@ package com.mysql.controller;
 
 import com.mysql.model.client.ClienteDTO;
 import com.mysql.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,21 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping("/cadastrar")
+    @Operation(summary = "Cadastra um Cliente no Sistema")
     public ResponseEntity<ClienteDTO> cadastrar(@RequestBody @Valid ClienteDTO dto) {
         ClienteDTO clienteDTO = clienteService.cadastrar(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteDTO);
     }
 
     @GetMapping()
+    @Operation(summary = "Lista todos os Clientes do sistema")
     public ResponseEntity<List<ClienteDTO>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Exclui Cliente passando o ID")
     public ResponseEntity<HttpStatus> excluirCliente(@PathVariable Long id) {
         if (clienteService.excluirUsuario(id)){
             return ResponseEntity.notFound().build();

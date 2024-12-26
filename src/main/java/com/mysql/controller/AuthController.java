@@ -3,6 +3,8 @@ package com.mysql.controller;
 import com.mysql.model.usuario.*;
 import com.mysql.security.TokenService;
 import com.mysql.service.UsuarioService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,8 @@ public class AuthController {
     private TokenService tokenService;
 
     @PostMapping("/logar")
+    @Operation(summary = "Usuario Loga no Site")
+
     public ResponseEntity doLogin(@RequestBody @Valid DataAutentication data) {
         System.out.println(data.password());
         var token = new UsernamePasswordAuthenticationToken(data.email(), data.password());
@@ -35,16 +39,19 @@ public class AuthController {
     }
 
     @PostMapping("/cadastrar")
+    @Operation(summary = "Cadastrar um usuario que loga no site")
     public ResponseEntity<String> createUser(@Valid @RequestBody UsuarioDTO dto) {
         return ResponseEntity.ok(usuarioService.createUser(dto));
     }
 
     @DeleteMapping("{id}")
+    @Operation(summary = "Deletar o Usuario que logam no site pelo ID")
     private ResponseEntity<String> deletarUsuario(@PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.deleteUser(id));
     }
 
     @GetMapping
+    @Operation(summary = "Listar todos os Usuarios que logam no site")
     private ResponseEntity<List<UserListDTO>> listarTodos() {
         return ResponseEntity.ok(usuarioService.listarTodos());
     }
