@@ -25,6 +25,13 @@ public class Atendimentos {
 
     private String descricao;
 
+    public Atendimentos(Cliente cliente, Profissional profissional, LocalDateTime localDateTime, String descricao) {
+        this.cliente = cliente;
+        this.profissional = profissional;
+        this.dataAtendimento = localDateTime;
+        this.descricao = descricao;
+    }
+
     public String getDescricao() {
         return descricao;
     }

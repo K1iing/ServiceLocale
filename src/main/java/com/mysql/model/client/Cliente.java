@@ -16,6 +16,7 @@ public class Cliente{
     private String senha;
 
 
+
     public String getSenha() {
         return senha;
     }

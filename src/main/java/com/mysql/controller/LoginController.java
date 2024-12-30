@@ -31,8 +31,8 @@ public class LoginController {
         return "autenticacao/cadastro";
     }
 
-    @GetMapping("/chatmessage")
+    @GetMapping("/docker")
     public String redirecionarChat() {
-        return "home/chatmessage";
+        return "home/docker";
     }
 }

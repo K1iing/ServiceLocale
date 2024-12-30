@@ -43,8 +43,16 @@ public class AtendimentosController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Lista o historico de um cliente pelo ID")
+    @Operation(summary = "Lista o historico de um atendimento pelo ID")
     public ResponseEntity<List<AtendimentosListagemDTO>> listarHistorico(@PathVariable Long id) {
         return ResponseEntity.ok(atendimentosService.listarHistorico(id));
     }
+
+    @GetMapping("/listar/{id}")
+    @Operation(summary = "Listar o atendimento pelo ID")
+    public ResponseEntity<AtendimentosListagemDTO> listarPeloId(@PathVariable Long id) {
+        return ResponseEntity.ok(atendimentosService.listarPeloId(id));
+    }
+
+
 }

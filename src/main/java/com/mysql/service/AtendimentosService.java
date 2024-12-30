@@ -35,20 +35,16 @@ public class AtendimentosService {
 
 
     public AtendimentosDTO agendamento(AtendimentosDTO dto) {
+
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        System.out.println(email);
         Cliente cliente = clienteRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Profissional profissional = profissionalRepository.findById(dto.idProfissional())
                 .orElseThrow(() -> new ExceptionPersonalizada("Profissional Não encontrado"));
         
-        Atendimentos atendimentos = new Atendimentos();
-        atendimentos.setCliente(cliente);
-        atendimentos.setProfissional(profissional);
-        atendimentos.setDataAtendimento(dto.dataAgendada());
-        atendimentos.setDescricao(dto.descricao());
+        Atendimentos atendimentos = new Atendimentos(cliente, profissional, dto.dataAgendada(), dto.descricao());
 
         atendimentos = atendimentosRepository.save(atendimentos);
 
@@ -60,9 +56,6 @@ public class AtendimentosService {
         return atendimentoMapper.toListDTO(atendimentosRepository.findAll());
     }
 
-    public List<Atendimentos> retornarAlgo() {
-        return atendimentosRepository.findAll();
-    }
 
     public boolean deletarPeloId(Long id) {
         if (atendimentosRepository.existsById(id)) {
@@ -72,10 +65,20 @@ public class AtendimentosService {
             return true;
         }
         return false;
+
     }
     public List<AtendimentosListagemDTO> listarHistorico(Long id) {
         Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
         LocalDateTime horasagora = LocalDate.now().atStartOfDay();
+
         return atendimentoMapper.toListDTO(atendimentosRepository.findByClienteAndDataAtendimentoBefore(cliente, horasagora));
+    }
+
+    public AtendimentosListagemDTO listarPeloId(Long id) {
+
+        Atendimentos atendimentos = atendimentosRepository.findById(id).orElseThrow(() -> new ExceptionPersonalizada("Atendimento não Encontrado"));
+
+        return atendimentoMapper.toListagemDTO(atendimentos);
     }
 }

@@ -21,18 +21,23 @@ public class SecurityConfig {
     private SecurityFilter securityFilter;
 
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/**", "/cliente/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/login", "/css/**", "/js/**",
-                         "/cadastrar",
-                        "/v3/api-docs/**", "/swagger-ui/**").permitAll())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/atendimentos/**", "/cliente/**"
-                        , "/profissional/**").authenticated())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/auth/**").authenticated())
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE, "/auth/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/**",
+                        "/cliente/**").permitAll())
+
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/login", "/css/**",
+                        "/js/**", "/cadastrar", "/v3/api-docs/**", "/swagger-ui/**", "docker").permitAll())
+
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/atendimentos/**", "/cliente/**",
+                        "/profissional/**").authenticated())
+
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/auth/**", "/profissional/**", "/cliente/**", "/atendimentos/**").authenticated())
+
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE, "/auth/**", "/cliente/**", "/profissional/**").authenticated())
+
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
