@@ -25,11 +25,36 @@ public class Atendimentos {
 
     private String descricao;
 
+
+    @Column(name = "status_atendimentos", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StatusEnum status_atendimentos = StatusEnum.PENDENTE;
+
+
+    public StatusEnum getStatus_atendimentos() {
+        return status_atendimentos;
+    }
+
+    public void setStatus_atendimentos(StatusEnum status_atendimentos) {
+        this.status_atendimentos = status_atendimentos;
+    }
+
+    public Atendimentos(Long id, Cliente cliente, Profissional profissional, LocalDateTime dataAtendimento, String descricao) {
+        Id = id;
+        this.cliente = cliente;
+        this.profissional = profissional;
+        this.dataAtendimento = dataAtendimento;
+        this.descricao = descricao;
+        this.status_atendimentos = StatusEnum.PENDENTE;
+
+    }
+
     public Atendimentos(Cliente cliente, Profissional profissional, LocalDateTime localDateTime, String descricao) {
         this.cliente = cliente;
         this.profissional = profissional;
         this.dataAtendimento = localDateTime;
         this.descricao = descricao;
+        this.status_atendimentos = StatusEnum.PENDENTE;
     }
 
     public String getDescricao() {

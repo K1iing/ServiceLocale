@@ -16,6 +16,7 @@ public interface AtendimentoMapper {
 
     @Mapping(target = "idProfissional", source = "profissional.id")
     @Mapping(target = "dataAgendada", source = "dataAtendimento")
+
     AtendimentosDTO toDTO(Atendimentos atendimentos);
 
     @Mapping(target = "descricao", source = "descricao")

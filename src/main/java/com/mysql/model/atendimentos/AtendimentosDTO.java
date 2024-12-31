@@ -10,12 +10,12 @@ import java.time.LocalDateTime;
 public record AtendimentosDTO(
         @NotNull(message = "Não pode ser nulo o IdProfissional")
         Long idProfissional,
-
         @NotNull
         @Future(message = "A data deve estar no futuro")
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
         LocalDateTime dataAgendada,
         @NotBlank(message = "A descricao nao pode ser vazia")
-        String descricao)
+        String descricao
+        )
 {
 }
