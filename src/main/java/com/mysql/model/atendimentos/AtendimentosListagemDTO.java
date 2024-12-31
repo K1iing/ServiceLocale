@@ -10,10 +10,8 @@ public record AtendimentosListagemDTO(
         ProfissionalListagemDTO profissional,
         @JsonFormat(pattern = "dd/MM/yyyy HH:mm:ss")
         LocalDateTime dataAtendimento,
-        String descricao
-
-
-
+        String descricao,
+        StatusEnum status_atendimentos
 
 ) {
 }

@@ -2,6 +2,7 @@ package com.mysql.controller;
 
 import com.mysql.model.atendimentos.AtendimentosDTO;
 import com.mysql.model.atendimentos.AtendimentosListagemDTO;
+import com.mysql.model.atendimentos.StatusEnum;
 import com.mysql.service.AtendimentosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -43,7 +44,7 @@ public class AtendimentosController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Lista o historico de um atendimento pelo ID")
+    @Operation(summary = "Lista o historico de atendimento do cliente pelo ID")
     public ResponseEntity<List<AtendimentosListagemDTO>> listarHistorico(@PathVariable Long id) {
         return ResponseEntity.ok(atendimentosService.listarHistorico(id));
     }
@@ -54,7 +55,9 @@ public class AtendimentosController {
         return ResponseEntity.ok(atendimentosService.listarPeloId(id));
     }
 
-
-
+    @PostMapping("/alterar/{id}")
+    public ResponseEntity<AtendimentosListagemDTO> mudarEstado(@PathVariable Long id, @RequestBody StatusEnum status) {
+        return ResponseEntity.ok(atendimentosService.mudarStatus(id, status));
+    }
 
 }

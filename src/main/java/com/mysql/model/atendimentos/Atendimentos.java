@@ -13,9 +13,11 @@ public class Atendimentos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
+
     @ManyToOne
     @JoinColumn(name = "profissional_id")
     private Profissional profissional;
@@ -25,19 +27,11 @@ public class Atendimentos {
 
     private String descricao;
 
-
     @Column(name = "status_atendimentos", nullable = false)
     @Enumerated(EnumType.STRING)
-    private StatusEnum status_atendimentos = StatusEnum.PENDENTE;
+    private StatusEnum status_atendimentos;
 
 
-    public StatusEnum getStatus_atendimentos() {
-        return status_atendimentos;
-    }
-
-    public void setStatus_atendimentos(StatusEnum status_atendimentos) {
-        this.status_atendimentos = status_atendimentos;
-    }
 
     public Atendimentos(Long id, Cliente cliente, Profissional profissional, LocalDateTime dataAtendimento, String descricao) {
         Id = id;
@@ -57,21 +51,6 @@ public class Atendimentos {
         this.status_atendimentos = StatusEnum.PENDENTE;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Atendimentos(Long id, Profissional profissional, Cliente cliente, LocalDateTime dataAtendimento, String descricao) {
-        Id = id;
-        this.profissional = profissional;
-        this.cliente = cliente;
-        this.dataAtendimento = dataAtendimento;
-        this.descricao = descricao;
-    }
 
     public Profissional getProfissional() {
         return profissional;
@@ -108,5 +87,19 @@ public class Atendimentos {
         Id = id;
     }
 
+    public StatusEnum getStatus_atendimentos() {
+        return status_atendimentos;
+    }
 
+    public void setStatus_atendimentos(StatusEnum status_atendimentos) {
+        this.status_atendimentos = status_atendimentos;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 }

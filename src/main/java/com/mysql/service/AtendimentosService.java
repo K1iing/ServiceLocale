@@ -5,6 +5,7 @@ import com.mysql.mapper.AtendimentoMapper;
 import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosDTO;
 import com.mysql.model.atendimentos.AtendimentosListagemDTO;
+import com.mysql.model.atendimentos.StatusEnum;
 import com.mysql.model.client.Cliente;
 import com.mysql.model.profissional.Profissional;
 import com.mysql.repository.AtendimentosRepository;
@@ -70,7 +71,11 @@ public class AtendimentosService {
     public List<AtendimentosListagemDTO> listarHistorico(Long id) {
         Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        LocalDateTime horasagora = LocalDate.now().atStartOfDay();
+        LocalDateTime horasagora = LocalDateTime.now();
+
+        List<Atendimentos> atendimentos = atendimentosRepository.findByClienteAndDataAtendimentoBefore(cliente, horasagora);
+
+        System.out.println("Atendimentos encontrados: " + atendimentos.size());
 
         return atendimentoMapper.toListDTO(atendimentosRepository.findByClienteAndDataAtendimentoBefore(cliente, horasagora));
     }
@@ -80,5 +85,16 @@ public class AtendimentosService {
         Atendimentos atendimentos = atendimentosRepository.findById(id).orElseThrow(() -> new ExceptionPersonalizada("Atendimento não Encontrado"));
 
         return atendimentoMapper.toListagemDTO(atendimentos);
+    }
+
+    public AtendimentosListagemDTO mudarStatus(Long id, StatusEnum status) {
+        Atendimentos atendimento = atendimentosRepository.findById(id).orElseThrow(() -> new ExceptionPersonalizada("Atendimento não encontrado"));
+        atendimento.setStatus_atendimentos(status);
+
+        atendimento = atendimentosRepository.save(atendimento);
+
+        System.out.println(atendimento);
+
+        return atendimentoMapper.toListagemDTO(atendimento);
     }
 }
