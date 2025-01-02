@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AtendimentosService {
@@ -44,7 +45,7 @@ public class AtendimentosService {
 
         Profissional profissional = profissionalRepository.findById(dto.idProfissional())
                 .orElseThrow(() -> new ExceptionPersonalizada("Profissional Não encontrado"));
-        
+
         Atendimentos atendimentos = new Atendimentos(cliente, profissional, dto.dataAgendada(), dto.descricao());
 
         atendimentos = atendimentosRepository.save(atendimentos);
@@ -68,16 +69,16 @@ public class AtendimentosService {
         return false;
 
     }
+
     public List<AtendimentosListagemDTO> listarHistorico(Long id) {
-        Cliente cliente = clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        LocalDateTime horasagora = LocalDateTime.now();
+        List<Atendimentos> atendimentos = atendimentosRepository.findByClienteId(id);
 
-        List<Atendimentos> atendimentos = atendimentosRepository.findByClienteAndDataAtendimentoBefore(cliente, horasagora);
+        if (atendimentos.isEmpty()) {
+            throw new ExceptionPersonalizada("atendimento esta vazio ou não existe");
+        }
 
-        System.out.println("Atendimentos encontrados: " + atendimentos.size());
-
-        return atendimentoMapper.toListDTO(atendimentosRepository.findByClienteAndDataAtendimentoBefore(cliente, horasagora));
+        return atendimentoMapper.toListDTO(atendimentos);
     }
 
     public AtendimentosListagemDTO listarPeloId(Long id) {
@@ -96,5 +97,35 @@ public class AtendimentosService {
         System.out.println(atendimento);
 
         return atendimentoMapper.toListagemDTO(atendimento);
+    }
+
+    public AtendimentosDTO atualizarAtendimentos(Long id, AtendimentosDTO dto) {
+
+        Optional<Atendimentos> optionalAtendimentos = atendimentosRepository.findById(id);
+
+        if (optionalAtendimentos.isEmpty()) {
+            throw new ExceptionPersonalizada("Atendimentos nao encontrado");
+        }
+
+        Optional<Profissional> profissionalOptional = profissionalRepository.findById(dto.idProfissional());
+
+        if (profissionalOptional.isEmpty()) {
+            throw new ExceptionPersonalizada("Profissional Não Encontrado");
+        }
+
+        Profissional profissional = profissionalOptional.get();
+
+        Atendimentos atendimentos = optionalAtendimentos.get();
+
+
+        atendimentos.setDataAtendimento(dto.dataAgendada());
+        atendimentos.setProfissional(profissional);
+        atendimentos.setDescricao(dto.descricao());
+
+        atendimentos = atendimentosRepository.save(atendimentos);
+
+        return atendimentoMapper.toDTO(atendimentos);
+
+
     }
 }

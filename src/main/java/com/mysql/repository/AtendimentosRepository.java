@@ -9,5 +9,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AtendimentosRepository extends JpaRepository<Atendimentos, Long> {
-    List<Atendimentos> findByClienteAndDataAtendimentoBefore(Cliente cliente, LocalDateTime now);
+
+    List<Atendimentos> findByClienteId(Long id);
 }
