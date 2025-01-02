@@ -1,9 +1,6 @@
 package com.mysql.controller;
 
-import com.mysql.model.usuario.DataAutentication;
-import com.mysql.model.usuario.UserListDTO;
-import com.mysql.model.usuario.UsuarioDTO;
-import com.mysql.model.usuario.UsuarioEntity;
+import com.mysql.model.usuario.*;
 import com.mysql.security.TokenService;
 import com.mysql.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,5 +56,13 @@ public class AuthController {
     private ResponseEntity<List<UserListDTO>> listarTodos() {
         return ResponseEntity.ok(usuarioService.listarTodos());
     }
+
+    @PutMapping("/atualizar")
+    @Operation(summary = "Atualize um Usuario que Autentica Relogue apos o Update")
+    public ResponseEntity<LoginUpdateDTO> AtualizarLogin(@RequestBody @Valid DataAutentication data) {
+        return ResponseEntity.ok(usuarioService.atualizarLogin(data));
+    }
+
+
 }
 

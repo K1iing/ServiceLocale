@@ -1,11 +1,13 @@
 package com.mysql.service;
 
 import com.mysql.exception.ExceptionPersonalizada;
+import com.mysql.mapper.AtendimentoMapper;
 import com.mysql.mapper.ProfissionalMapper;
 import com.mysql.model.atendimentos.Atendimentos;
-import com.mysql.model.atendimentos.AtendimentosDTO;
+import com.mysql.model.atendimentos.AtendimentosListagemDTO;
 import com.mysql.model.profissional.Profissional;
 import com.mysql.model.profissional.ProfissionalDTO;
+import com.mysql.repository.AtendimentosRepository;
 import com.mysql.repository.ProfissionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,12 @@ public class ProfissionalService {
 
     @Autowired
     private ProfissionalMapper profissionalMapper;
+
+    @Autowired
+    private AtendimentosRepository atendimentosRepository;
+
+    @Autowired
+    private AtendimentoMapper atendimentoMapper;
 
     public List<Profissional> mostrarTodos() {
 
@@ -46,5 +54,14 @@ public class ProfissionalService {
         }
         profissionalRepository.deleteById(id);
         return true;
+    }
+
+    public List<AtendimentosListagemDTO> buscarPorProfissional(Long id) {
+        List<Atendimentos> atendimentos = atendimentosRepository.findByProfissionalId(id);
+        if (atendimentos.isEmpty()) {
+            throw new ExceptionPersonalizada("Atendimento não encontrado pelo ID do Profissional" + id);
+        }
+        return atendimentoMapper.toListDTO(atendimentos);
+
     }
 }

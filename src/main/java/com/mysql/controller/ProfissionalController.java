@@ -3,6 +3,7 @@ package com.mysql.controller;
 import com.mysql.mapper.ProfissionalMapper;
 import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosDTO;
+import com.mysql.model.atendimentos.AtendimentosListagemDTO;
 import com.mysql.model.profissional.Profissional;
 import com.mysql.model.profissional.ProfissionalDTO;
 import com.mysql.service.ProfissionalService;
@@ -44,6 +45,13 @@ public class ProfissionalController {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ja foi excluido ou não existe");
     }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "Lista o Historico de Atendimentos daquele Profissional passando o ID")
+    public ResponseEntity<List<AtendimentosListagemDTO>> listarAtendimentoPorProfissional(@PathVariable Long id) {
+        return ResponseEntity.ok(profissionalService.buscarPorProfissional(id));
+    }
+
 
 
 }

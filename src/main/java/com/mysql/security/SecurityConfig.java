@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/atendimentos/**", "/cliente/**",
                         "/profissional/**").authenticated())
 
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PUT, "/atendimentos/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.PUT, "/atendimentos/**", "/auth/**").authenticated())
 
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/auth/**", "/profissional/**", "/cliente/**", "/atendimentos/**").authenticated())
 

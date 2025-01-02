@@ -1,5 +1,6 @@
 package com.mysql.mapper;
 
+import com.mysql.model.usuario.LoginUpdateDTO;
 import com.mysql.model.usuario.UserListDTO;
 import com.mysql.model.usuario.UsuarioEntity;
 import org.mapstruct.Mapper;
@@ -16,4 +17,8 @@ public interface UsuarioMapper {
     UserListDTO toDTO(UsuarioEntity entity);
 
     List<UserListDTO> toListDTO(List<UsuarioEntity> entities);
+
+    @Mapping(target = "email", source = "username")
+    @Mapping(target = "senha", source = "password")
+    LoginUpdateDTO toDtoUpdate(UsuarioEntity user);
 }

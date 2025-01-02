@@ -28,6 +28,11 @@ public class UsuarioEntity implements UserDetails {
         this.username = username;
     }
 
+    public UsuarioEntity(String email, String password) {
+        this.username = email;
+        this.password = password;
+    }
+
     public Long getId() {
         return Id;
     }
