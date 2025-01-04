@@ -1,5 +1,6 @@
 package com.mysql.security;
 
+import com.mysql.config.CorsConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +20,9 @@ public class SecurityConfig {
 
     @Autowired
     private SecurityFilter securityFilter;
+
+    @Autowired
+    private CorsConfig corsConfig;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -41,7 +45,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE, "/auth/**", "/cliente/**", "/profissional/**").authenticated())
 
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource())) // Configuração de CORS aplicada
+                .build();// Usando o CorsConfig
+
 
     }
 
