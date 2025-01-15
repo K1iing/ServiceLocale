@@ -1,5 +1,6 @@
 package com.mysql.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -14,11 +15,13 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://127.0.0.1:5500"); // Permitir origem específica
+        config.addAllowedOrigin("*"); // Permitir origem específica
         config.addAllowedMethod("*"); // Permitir todos os métodos HTTP
         config.addAllowedHeader("*"); // Permitir todos os cabeçalhos
         source.registerCorsConfiguration("/**", config);
-        return (CorsConfigurationSource) source;
+        return source;
     }
+
+
 }
 

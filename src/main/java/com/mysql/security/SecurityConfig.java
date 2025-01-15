@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/**",
-                        "/cliente/**").permitAll())
+                        "/cliente/**", "/auth/logar").permitAll())
 
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/login", "/css/**",
                         "/js/**", "/cadastrar", "/v3/api-docs/**", "/swagger-ui/**", "docker").permitAll())
@@ -45,8 +45,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE, "/auth/**", "/cliente/**", "/profissional/**").authenticated())
 
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource())) // Configuração de CORS aplicada
-                .build();// Usando o CorsConfig
+
+                .cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()))
+                
+                .build();
 
 
     }
