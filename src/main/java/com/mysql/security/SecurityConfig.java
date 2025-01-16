@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.POST, "/auth/**",
-                        "/cliente/**", "/auth/logar").permitAll())
+                        "/cliente/**", "/auth/logar", "/email/**").permitAll())
 
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/login", "/css/**",
                         "/js/**", "/cadastrar", "/v3/api-docs/**", "/swagger-ui/**", "docker").permitAll())
