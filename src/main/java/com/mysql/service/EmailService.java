@@ -101,7 +101,7 @@ public class EmailService {
         if ("Token validado com sucesso".equals(verificationResult)) {
             Optional<Cliente> clienteOptional = clienteRepository.findByEmail(email);
 
-            Optional<UsuarioEntity> usuarioEntityOptional = userRepository.findByEmail(email);
+            Optional<UsuarioEntity> usuarioEntityOptional = userRepository.searchByUsername(email);
 
             if (clienteOptional.isEmpty() && usuarioEntityOptional.isEmpty()) {
                 throw new ExceptionPersonalizada("Cliente não encontrado ou token expirado");
