@@ -3,12 +3,18 @@ package com.mysql.service;
 import com.mysql.exception.ExceptionPersonalizada;
 import com.mysql.model.client.Cliente;
 import com.mysql.model.email.EmailDTO;
+import com.mysql.model.email.PasswordResetToken;
+import com.mysql.model.usuario.UsuarioEntity;
 import com.mysql.repository.ClienteRepository;
+import com.mysql.repository.PasswordResetTokenRepository;
+import com.mysql.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,7 +25,16 @@ public class EmailService {
     private ClienteRepository clienteRepository;
 
     @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     private JavaMailSender mailSender;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public String sendToken(EmailDTO emailDTO) {
 
@@ -40,6 +55,14 @@ public class EmailService {
                 "Este token é válido por 15 minutos.\n\n" +
                 "Atenciosamente,\nEquipe de Suporte";
 
+        LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(15);
+
+        PasswordResetToken passwordResetToken = new PasswordResetToken();
+        passwordResetToken.setCliente(clienteget);
+        passwordResetToken.setToken(token);
+        passwordResetToken.setExpirationTime(expirationTime);
+
+        passwordResetTokenRepository.save(passwordResetToken);
 
         sendEmail(emailDTO.email(), subject, message);
 
@@ -54,8 +77,52 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public String verifyToken(String email, String token) {
+    public String verifyToken(String token) {
 
+        Optional<PasswordResetToken> tokenOptional = passwordResetTokenRepository.findByToken(token);
+
+        if (tokenOptional.isEmpty()) {
+            throw new ExceptionPersonalizada("Token invalido ou não encontrado");
+        }
+
+        PasswordResetToken passwordResetToken = tokenOptional.get();
+
+        if (passwordResetToken.getExpirationTime().isBefore(LocalDateTime.now())) {
+            throw new ExceptionPersonalizada("O token expirou");
+        }
+
+        return "Token validado com sucesso";
     }
+
+    public String resetPassword(String token, String email, String newPassword) {
+
+        String verificationResult = verifyToken(token);
+
+        if ("Token validado com sucesso".equals(verificationResult)) {
+            Optional<Cliente> clienteOptional = clienteRepository.findByEmail(email);
+
+            Optional<UsuarioEntity> usuarioEntityOptional = userRepository.findByEmail(email);
+
+            if (clienteOptional.isEmpty() && usuarioEntityOptional.isEmpty()) {
+                throw new ExceptionPersonalizada("Cliente não encontrado ou token expirado");
+            }
+            UsuarioEntity usuarioEntity = usuarioEntityOptional.get();
+            Cliente cliente = clienteOptional.get();
+
+            cliente.setSenha(bCryptPasswordEncoder.encode(newPassword));
+            clienteRepository.save(cliente);
+
+            usuarioEntity.setPassword(bCryptPasswordEncoder.encode(newPassword));
+            userRepository.save(usuarioEntity);
+
+
+
+            return "Senha alterada com sucesso! " + cliente.getEmail();
+        }
+
+        return "Falha na verificação do token";
+    }
+
+
 }
 

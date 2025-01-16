@@ -1,16 +1,17 @@
 package com.mysql.controller;
 
-import com.mysql.model.email.ConfirmationEmailDTO;
+import com.mysql.exception.ExceptionPersonalizada;
 import com.mysql.model.email.EmailDTO;
+import com.mysql.model.email.ResetPasswordDTO;
 import com.mysql.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/email")
@@ -25,9 +26,20 @@ public class EmailController {
         return ResponseEntity.ok(emailService.sendToken(emailDTO));
     }
 
-    @PostMapping("/getToken")
+    @PostMapping("/postToken")
     @Operation(summary = "Receber token")
-    public ResponseEntity<String> verificaToken(@RequestBody @Valid ConfirmationEmailDTO confirmationEmailDTO) {
-        return ResponseEntity.ok(emailService.verifyToken(confirmationEmailDTO.email(), confirmationEmailDTO.email()));
+    public ResponseEntity<String> enviarToken(@RequestBody @Valid String token) {
+        try {
+            String result = emailService.verifyToken(token);
+            return ResponseEntity.ok(result);
+        }catch (ExceptionPersonalizada e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/resetPassword")
+    @Operation(summary = "Alterar senha após confirmar o token")
+    public ResponseEntity<String> alterarSenha(@RequestBody ResetPasswordDTO resetPasswordDTO) {
+        return ResponseEntity.ok(emailService.resetPassword(resetPasswordDTO.token(), resetPasswordDTO.email(), resetPasswordDTO.newPassword()));
     }
 }
