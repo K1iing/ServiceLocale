@@ -3,6 +3,7 @@ package com.mysql.controller;
 import com.mysql.exception.ExceptionPersonalizada;
 import com.mysql.model.email.EmailDTO;
 import com.mysql.model.email.ResetPasswordDTO;
+import com.mysql.model.email.TokenDTO;
 import com.mysql.service.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -28,7 +29,7 @@ public class EmailController {
 
     @PostMapping("/postToken")
     @Operation(summary = "Receber token")
-    public ResponseEntity<String> enviarToken(@RequestBody @Valid String token) {
+    public ResponseEntity<String> enviarToken(@RequestBody @Valid TokenDTO token) {
         try {
             String result = emailService.verifyToken(token);
             return ResponseEntity.ok(result);

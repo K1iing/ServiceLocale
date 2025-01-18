@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 
 public record ResetPasswordDTO(
         @NotBlank
-        String token,
+        TokenDTO token,
         @NotBlank
         String email,
         @NotBlank

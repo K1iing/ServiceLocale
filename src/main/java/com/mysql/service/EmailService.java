@@ -4,6 +4,7 @@ import com.mysql.exception.ExceptionPersonalizada;
 import com.mysql.model.client.Cliente;
 import com.mysql.model.email.EmailDTO;
 import com.mysql.model.email.PasswordResetToken;
+import com.mysql.model.email.TokenDTO;
 import com.mysql.model.usuario.UsuarioEntity;
 import com.mysql.repository.ClienteRepository;
 import com.mysql.repository.PasswordResetTokenRepository;
@@ -77,7 +78,9 @@ public class EmailService {
         mailSender.send(message);
     }
 
-    public String verifyToken(String token) {
+    public String verifyToken(TokenDTO tokenDTO) {
+
+        String token = tokenDTO.token();
 
         Optional<PasswordResetToken> tokenOptional = passwordResetTokenRepository.findByToken(token);
 
@@ -94,7 +97,7 @@ public class EmailService {
         return "Token validado com sucesso";
     }
 
-    public String resetPassword(String token, String email, String newPassword) {
+    public String resetPassword(TokenDTO token, String email, String newPassword) {
 
         String verificationResult = verifyToken(token);
 
