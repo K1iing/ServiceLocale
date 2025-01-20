@@ -1,5 +1,6 @@
 package com.mysql.controller;
 
+import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosDTO;
 import com.mysql.model.atendimentos.AtendimentosListagemDTO;
 import com.mysql.model.atendimentos.StatusEnum;
@@ -65,5 +66,10 @@ public class AtendimentosController {
     @Operation(summary = "Atualiza um atendimento passando ID e as Informações")
     public ResponseEntity<AtendimentosDTO> atualizaAtendimento(@PathVariable Long id, @RequestBody @Valid AtendimentosDTO dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(atendimentosService.atualizarAtendimentos(id, dto));
+    }
+
+    @GetMapping("/email/{email}")
+    public ResponseEntity<List<AtendimentosListagemDTO>> buscarPeloEmailAtendimentos(@PathVariable String email) {
+        return ResponseEntity.ok(atendimentosService.listarTodosPeloEmail(email));
     }
 }

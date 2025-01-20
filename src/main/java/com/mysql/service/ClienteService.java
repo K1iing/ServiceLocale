@@ -5,12 +5,14 @@ import com.mysql.mapper.ClienteMapper;
 import com.mysql.mapper.GeneroMapper;
 import com.mysql.model.client.Cliente;
 import com.mysql.model.client.ClienteDTO;
+import com.mysql.model.client.NomeDTO;
 import com.mysql.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -56,7 +58,15 @@ public class ClienteService {
         }
         return false;
 
+    }
 
+    public String receberNome(String email) {
+
+        Optional<Cliente> clienteOptional = clienteRepository.findByEmail(email);
+
+        Cliente cliente = clienteOptional.get();
+
+        return cliente.getNome();
     }
 
 }

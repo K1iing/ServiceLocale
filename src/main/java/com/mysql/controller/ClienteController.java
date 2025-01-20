@@ -2,6 +2,7 @@ package com.mysql.controller;
 
 
 import com.mysql.model.client.ClienteDTO;
+import com.mysql.model.client.NomeDTO;
 import com.mysql.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -42,5 +43,11 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/{email}")
+    @Operation(summary = "Busca nome do usuario pelo email")
+    public ResponseEntity<String> buscarPeloEmail(@PathVariable String email) {
+        return ResponseEntity.ok(clienteService.receberNome(email));
     }
 }

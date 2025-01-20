@@ -97,9 +97,9 @@ public class EmailService {
         return "Token validado com sucesso";
     }
 
-    public String resetPassword(TokenDTO token, String email, String newPassword) {
+    public String resetPassword(TokenDTO tokenDTO, String email, String newPassword) {
 
-        String verificationResult = verifyToken(token);
+        String verificationResult = verifyToken(tokenDTO);
 
         if ("Token validado com sucesso".equals(verificationResult)) {
             Optional<Cliente> clienteOptional = clienteRepository.findByEmail(email);

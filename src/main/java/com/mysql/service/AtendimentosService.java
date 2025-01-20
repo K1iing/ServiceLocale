@@ -56,6 +56,11 @@ public class AtendimentosService {
         return atendimentoMapper.toListDTO(atendimentosRepository.findAll());
     }
 
+    public List<AtendimentosListagemDTO> listarTodosPeloEmail(String email) {
+        return atendimentoMapper.toListDTO(atendimentosRepository.findByClienteEmail(email));
+
+    }
+
 
     public boolean deletarPeloId(Long id) {
         if (atendimentosRepository.existsById(id)) {

@@ -12,4 +12,5 @@ public interface AtendimentosRepository extends JpaRepository<Atendimentos, Long
 
     List<Atendimentos> findByClienteId(Long id);
     List<Atendimentos> findByProfissionalId(Long id);
+    List<Atendimentos> findByClienteEmail(String email);
 }
