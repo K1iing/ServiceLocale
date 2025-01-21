@@ -3,6 +3,7 @@ package com.mysql.mapper;
 import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosDTO;
 import com.mysql.model.atendimentos.AtendimentosListagemDTO;
+import com.mysql.model.atendimentos.ListagemMeusAtendimentos;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -26,5 +27,7 @@ public interface AtendimentoMapper {
 
     AtendimentosListagemDTO toListagemDTO(Atendimentos atendimentos);
 
+    @Mapping(target = "dataAtendimento", source = "dataAtendimento")
+    List<ListagemMeusAtendimentos> toListAtendimentosDTO(List<Atendimentos> dtolista);
 }
 

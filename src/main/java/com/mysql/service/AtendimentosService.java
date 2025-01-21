@@ -2,10 +2,7 @@ package com.mysql.service;
 
 import com.mysql.exception.ExceptionPersonalizada;
 import com.mysql.mapper.AtendimentoMapper;
-import com.mysql.model.atendimentos.Atendimentos;
-import com.mysql.model.atendimentos.AtendimentosDTO;
-import com.mysql.model.atendimentos.AtendimentosListagemDTO;
-import com.mysql.model.atendimentos.StatusEnum;
+import com.mysql.model.atendimentos.*;
 import com.mysql.model.client.Cliente;
 import com.mysql.model.profissional.Profissional;
 import com.mysql.repository.AtendimentosRepository;
@@ -56,8 +53,8 @@ public class AtendimentosService {
         return atendimentoMapper.toListDTO(atendimentosRepository.findAll());
     }
 
-    public List<AtendimentosListagemDTO> listarTodosPeloEmail(String email) {
-        return atendimentoMapper.toListDTO(atendimentosRepository.findByClienteEmail(email));
+    public List<ListagemMeusAtendimentos> listarTodosPeloEmail(String email) {
+        return atendimentoMapper.toListAtendimentosDTO(atendimentosRepository.findByClienteEmail(email));
 
     }
 

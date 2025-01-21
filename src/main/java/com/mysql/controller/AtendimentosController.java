@@ -1,9 +1,6 @@
 package com.mysql.controller;
 
-import com.mysql.model.atendimentos.Atendimentos;
-import com.mysql.model.atendimentos.AtendimentosDTO;
-import com.mysql.model.atendimentos.AtendimentosListagemDTO;
-import com.mysql.model.atendimentos.StatusEnum;
+import com.mysql.model.atendimentos.*;
 import com.mysql.service.AtendimentosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -69,7 +66,7 @@ public class AtendimentosController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<List<AtendimentosListagemDTO>> buscarPeloEmailAtendimentos(@PathVariable String email) {
+    public ResponseEntity<List<ListagemMeusAtendimentos>> buscarPeloEmailAtendimentos(@PathVariable String email) {
         return ResponseEntity.ok(atendimentosService.listarTodosPeloEmail(email));
     }
 }
