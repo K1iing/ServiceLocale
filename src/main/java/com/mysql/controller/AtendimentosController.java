@@ -55,7 +55,7 @@ public class AtendimentosController {
 
     @PostMapping("/alterar/{id}")
     @Operation(summary = "Muda a situação do Atendimento, CANCELADO OU CONCLUIDA")
-    public ResponseEntity<AtendimentosListagemDTO> mudarEstado(@PathVariable Long id, @RequestBody StatusEnum status) {
+    public ResponseEntity<AtendimentosListagemDTO> mudarEstado(@PathVariable Long id, @RequestBody StatusDTO status) {
         return ResponseEntity.ok(atendimentosService.mudarStatus(id, status));
     }
 

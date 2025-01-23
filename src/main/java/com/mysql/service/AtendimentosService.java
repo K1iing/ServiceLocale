@@ -88,9 +88,11 @@ public class AtendimentosService {
         return atendimentoMapper.toListagemDTO(atendimentos);
     }
 
-    public AtendimentosListagemDTO mudarStatus(Long id, StatusEnum status) {
+    public AtendimentosListagemDTO mudarStatus(Long id, StatusDTO status) {
         Atendimentos atendimento = atendimentosRepository.findById(id).orElseThrow(() -> new ExceptionPersonalizada("Atendimento não encontrado"));
-        atendimento.setStatus_atendimentos(status);
+        atendimento.setStatus_atendimentos(status.status());
+
+        atendimento.setStatus_atendimentos(status.status());
 
         atendimento = atendimentosRepository.save(atendimento);
 

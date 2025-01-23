@@ -28,6 +28,7 @@ public interface AtendimentoMapper {
     AtendimentosListagemDTO toListagemDTO(Atendimentos atendimentos);
 
     @Mapping(target = "dataAtendimento", source = "dataAtendimento")
+    @Mapping(target = "id", source = "Id")
     List<ListagemMeusAtendimentos> toListAtendimentosDTO(List<Atendimentos> dtolista);
 }
 

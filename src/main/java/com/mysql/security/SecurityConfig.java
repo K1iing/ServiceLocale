@@ -42,7 +42,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.GET, "/auth/**", "/profissional/**", "/cliente/**", "/atendimentos/**").authenticated())
 
-                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE, "/auth/**", "/cliente/**", "/profissional/**").authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers(HttpMethod.DELETE, "/auth/**", "/cliente/**", "/profissional/**", "/atendimentos/**").authenticated())
 
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 
