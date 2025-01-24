@@ -43,4 +43,10 @@ public class EmailController {
     public ResponseEntity<String> alterarSenha(@RequestBody ResetPasswordDTO resetPasswordDTO) {
         return ResponseEntity.ok(emailService.resetPassword(resetPasswordDTO.token(), resetPasswordDTO.email(), resetPasswordDTO.newPassword()));
     }
+
+    @PostMapping("/postConfirmationAtendimento")
+    @Operation(summary = "Envia email de atendimento confirmado com sucesso")
+    public ResponseEntity<String> enviarEmailAtendimentoComSucesso(@RequestBody @Valid EmailDTO emailDTO) {
+        return ResponseEntity.ok(emailService.sendConfirmationAtendimento(emailDTO));
+    }
 }

@@ -54,7 +54,7 @@ public class EmailService {
                 "Aqui está o seu token de recuperação de senha:\n\n" +
                 token + "\n\n" +
                 "Este token é válido por 15 minutos.\n\n" +
-                "Atenciosamente,\nEquipe de Suporte";
+                "Atenciosamente,\nEquipe de Suporte, ClubService";
 
         LocalDateTime expirationTime = LocalDateTime.now().plusMinutes(15);
 
@@ -70,12 +70,33 @@ public class EmailService {
         return "Token enviado com sucesso para " + clienteget.getEmail();
     }
 
-    private void sendEmail(String to, String subject, String text) {
+    public void sendEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
         mailSender.send(message);
+    }
+
+    public String sendConfirmationAtendimento(EmailDTO emailDTO) {
+
+        Optional<Cliente> cliente = clienteRepository.findByEmail(emailDTO.email());
+
+        if (cliente.isEmpty()) {
+            throw new ExceptionPersonalizada("Cliente não encontrado");
+        }
+
+        Cliente clienteget = cliente.get();
+
+        String subject = "Atendimento Confirmado com Sucesso!";
+        String message = "Olá, " + clienteget.getNome() + ",\n\n" +
+                "Seu atendimento foi Cadastrado com Sucesso!\n\n" +
+                "Atenciosamente,\nEquipe de Suporte, ClubService!";
+
+
+        sendEmail(emailDTO.email(), subject, message);
+
+        return "Email enviado com sucesso para " + clienteget.getEmail();
     }
 
     public String verifyToken(TokenDTO tokenDTO) {
