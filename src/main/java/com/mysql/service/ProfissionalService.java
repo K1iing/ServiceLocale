@@ -5,6 +5,7 @@ import com.mysql.mapper.AtendimentoMapper;
 import com.mysql.mapper.ProfissionalMapper;
 import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosListagemDTO;
+import com.mysql.model.profissional.Especialidade;
 import com.mysql.model.profissional.Profissional;
 import com.mysql.model.profissional.ProfissionalDTO;
 import com.mysql.repository.AtendimentosRepository;
@@ -12,6 +13,8 @@ import com.mysql.repository.ProfissionalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -63,5 +66,9 @@ public class ProfissionalService {
         }
         return atendimentoMapper.toListDTO(atendimentos);
 
+    }
+
+    public List<Especialidade> obterTodasEspecialidades() {
+        return Arrays.asList(Especialidade.values());
     }
 }

@@ -7,5 +7,8 @@ public record ProfissionalDTO(
         @NotBlank(message = "O nome não pode ser vazio")
         String nome,
         @NotNull(message = "A especialidade não pode ser nula")
-        Especialidade especialidade) {
+        Especialidade especialidade,
+        @NotBlank
+        String email) {
+
 }

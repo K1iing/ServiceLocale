@@ -13,10 +13,11 @@ public class Profissional {
     public Profissional() {
     }
 
-    public Profissional(String nome, Long id, Especialidade especialidade) {
+    public Profissional(String nome, Long id, Especialidade especialidade, String email) {
         this.nome = nome;
         Id = id;
         this.especialidade = especialidade;
+        this.email = email;
     }
 
     public String getNome() {
@@ -48,4 +49,13 @@ public class Profissional {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Especialidade especialidade;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 }

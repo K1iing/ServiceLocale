@@ -81,6 +81,17 @@ public class AtendimentosService {
         return atendimentoMapper.toListDTO(atendimentos);
     }
 
+    public List<AtendimentosListagemDTO> listarHistoricoEmail(String email) {
+
+        List<Atendimentos> atendimentos = atendimentosRepository.findByProfissionalEmail(email);
+
+        if (atendimentos.isEmpty()) {
+            throw new ExceptionPersonalizada("atendimento esta vazio ou não existe");
+        }
+
+        return atendimentoMapper.toListDTO(atendimentos);
+    }
+
     public AtendimentosListagemDTO listarPeloId(Long id) {
 
         Atendimentos atendimentos = atendimentosRepository.findById(id).orElseThrow(() -> new ExceptionPersonalizada("Atendimento não Encontrado"));

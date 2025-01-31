@@ -4,6 +4,7 @@ import com.mysql.mapper.ProfissionalMapper;
 import com.mysql.model.atendimentos.Atendimentos;
 import com.mysql.model.atendimentos.AtendimentosDTO;
 import com.mysql.model.atendimentos.AtendimentosListagemDTO;
+import com.mysql.model.profissional.Especialidade;
 import com.mysql.model.profissional.Profissional;
 import com.mysql.model.profissional.ProfissionalDTO;
 import com.mysql.service.ProfissionalService;
@@ -52,6 +53,11 @@ public class ProfissionalController {
         return ResponseEntity.ok(profissionalService.buscarPorProfissional(id));
     }
 
+    @GetMapping("/profissoes")
+    @Operation(summary = "Lista todas as profissoes")
+    public ResponseEntity<List<Especialidade>> listarTodasAsProfissoes() {
+        return ResponseEntity.ok(profissionalService.obterTodasEspecialidades());
+    }
 
 
 }

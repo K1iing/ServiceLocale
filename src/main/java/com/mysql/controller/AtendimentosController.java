@@ -47,6 +47,12 @@ public class AtendimentosController {
         return ResponseEntity.ok(atendimentosService.listarHistorico(id));
     }
 
+    @GetMapping("/listagem/{email}")
+    @Operation(summary = "Lista o historico de atendimento do profissional pelo Email")
+    public ResponseEntity<List<AtendimentosListagemDTO>> listarHistorico(@PathVariable String email) {
+        return ResponseEntity.ok(atendimentosService.listarHistoricoEmail(email));
+    }
+
     @GetMapping("/listar/{id}")
     @Operation(summary = "Listar o atendimento pelo ID")
     public ResponseEntity<AtendimentosListagemDTO> listarPeloId(@PathVariable Long id) {
@@ -54,7 +60,7 @@ public class AtendimentosController {
     }
 
     @PostMapping("/alterar/{id}")
-    @Operation(summary = "Muda a situação do Atendimento, CANCELADO OU CONCLUIDA")
+    @Operation(summary = "Muda a situação do Atendimento, CANCELADO OU CONCLUIDO")
     public ResponseEntity<AtendimentosListagemDTO> mudarEstado(@PathVariable Long id, @RequestBody StatusDTO status) {
         return ResponseEntity.ok(atendimentosService.mudarStatus(id, status));
     }
@@ -66,6 +72,7 @@ public class AtendimentosController {
     }
 
     @GetMapping("/email/{email}")
+    @Operation(summary = "Lista o historico de atendimento do cliente pelo email")
     public ResponseEntity<List<ListagemMeusAtendimentos>> buscarPeloEmailAtendimentos(@PathVariable String email) {
         return ResponseEntity.ok(atendimentosService.listarTodosPeloEmail(email));
     }
